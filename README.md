@@ -69,17 +69,6 @@ zip -r Estakada99TV.wgt *
 - Internet connection
 - For sideloading: Samsung `sdb` tool (included with [Tizen Studio](https://developer.tizen.org/development/tizen-studio/download))
 
-## Publishing to Samsung TV App Store
-
-The sideloaded `.wgt` is unsigned, which is fine for development. To publish:
-
-1. Install [Tizen Studio](https://developer.tizen.org/development/tizen-studio/download)
-2. Import the project as a Tizen Web Application
-3. Register for a [Samsung Seller Office](https://seller.samsungapps.com/) account
-4. Generate a certificate via Tizen Studio's Certificate Manager
-5. Sign and package the app
-6. Submit through Seller Office
-
 ## Tech Stack
 
 | Component | Technology |

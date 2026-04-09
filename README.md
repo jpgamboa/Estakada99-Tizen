@@ -42,6 +42,8 @@ zip -r Estakada99TV.wgt *
 
 ## Installing on a Samsung TV (Sideload)
 
+Samsung does not allow `.wgt` files to be installed via USB — sideloading must be done over Wi-Fi using Samsung's debug bridge (`sdb`).
+
 1. On the TV, go to **Settings > Apps**, type `12345` on the remote to enter **Developer Mode**
 2. Enable Developer Mode and set your computer's IP address
 3. Restart the TV
@@ -51,6 +53,10 @@ zip -r Estakada99TV.wgt *
    sdb install Estakada99TV.wgt
    ```
 5. The app will appear in the TV's app list
+
+### Alternative: No Tizen Studio
+
+If you don't want to install the full Tizen Studio SDK, you can use [tizen-app-installer](https://gist.github.com/CodaBool/f3140d5b4fbccdc990eee3093d21efa3), a lightweight CLI tool that installs `.wgt` files over the network. Requires Node.js.
 
 ## Remote Control
 

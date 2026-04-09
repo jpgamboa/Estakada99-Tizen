@@ -1,0 +1,16 @@
+# Tizen package output
+*.wgt
+
+# Tizen Studio project files
+.project
+.tproject
+.buildResult/
+.sign/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

@@ -7,10 +7,15 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <img id="background" src="images/background.png" alt="">
+    <div id="skyGradient"></div>
     <img id="logo" src="images/logo.png" alt="Estakada 99">
     <div id="status">Connecting...</div>
     <button id="playPauseBtn">&#9654;</button>
+    <div id="nowPlaying" class="hidden">
+        <div id="showName" class="hidden"></div>
+        <div id="nowPlayingLabel">Currently playing:</div>
+        <div id="nowPlayingTrack"></div>
+    </div>
     <div id="clock"></div>
     <audio id="audioPlayer" preload="auto"></audio>
     <script src="js/app.js"></script>

@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Satoshi';
+    src: url('satoshi-regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('satoshi-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,12 +19,14 @@
 }
 
 body {
-    background: #000;
     overflow: hidden;
     width: 1920px;
     height: 1080px;
-    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    font-family: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background-color: #7ec8e3;
 }
+
+/* ── Animated gradient background (matches e99.live sky-motion) ── */
 
 #background {
     position: absolute;
@@ -18,14 +34,29 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    animation: pulse 4s ease-in-out infinite;
+    z-index: 0;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.85; transform: scale(1.03); }
+#skyGradient {
+    position: absolute;
+    inset: -120%;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        135deg,
+        #56c1e8 0%,
+        #7ed6f5 18%,
+        #a8e6cf 35%,
+        #f9e4b7 52%,
+        #f7b8a8 68%,
+        #c4a8e8 82%,
+        #82c4f0 100%
+    );
+    background-size: 400% 400%;
+    transform: translateZ(0);
 }
+
+/* ── Bouncing logo ── */
 
 #logo {
     position: absolute;
@@ -36,20 +67,25 @@ body {
     z-index: 10;
 }
 
+/* ── Status text ── */
+
 #status {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #fff;
+    color: #1a2a3a;
     font-size: 20px;
-    text-shadow: 1px 1px 4px #000;
+    font-weight: 700;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     z-index: 20;
 }
 
 #status.hidden {
     display: none;
 }
+
+/* ── Play/Pause button ── */
 
 #playPauseBtn {
     position: absolute;
@@ -59,10 +95,11 @@ body {
     width: 120px;
     height: 56px;
     font-size: 28px;
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
+    font-family: 'Satoshi', sans-serif;
+    background: rgba(255, 255, 255, 0.35);
+    color: #f0f8ff;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 9999px;
     cursor: pointer;
     z-index: 20;
     opacity: 0;
@@ -76,16 +113,61 @@ body {
 }
 
 #playPauseBtn.focused {
-    background: rgba(255, 255, 255, 0.35);
-    border-color: #fff;
+    background: #d3a89c;
+    border-color: rgba(211, 168, 156, 0.35);
+    color: #1a2a3a;
 }
+
+/* ── Now playing ── */
+
+#nowPlaying {
+    position: absolute;
+    bottom: 28px;
+    left: 32px;
+    z-index: 20;
+    max-width: 480px;
+}
+
+#nowPlaying.hidden {
+    display: none;
+}
+
+#showName {
+    color: #1a2a3a;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+#showName.hidden {
+    display: none;
+}
+
+#nowPlayingLabel {
+    color: #3a5068;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+#nowPlayingTrack {
+    color: #1a2a3a;
+    font-size: 18px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 480px;
+}
+
+/* ── Clock ── */
 
 #clock {
     position: absolute;
     bottom: 32px;
     right: 32px;
-    color: #fff;
+    color: #1a2a3a;
     font-size: 24px;
-    text-shadow: 1px 1px 4px #000;
+    font-family: 'Satoshi', sans-serif;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
     z-index: 20;
 }

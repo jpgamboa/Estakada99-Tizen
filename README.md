@@ -64,9 +64,24 @@ Samsung does not allow `.wgt` files to be installed via USB — sideloading must
    ```
 5. The app will appear in the TV's app list
 
-### Alternative: No Tizen Studio
+### Alternative: Without Tizen Studio
 
-If you don't want to install the full Tizen Studio SDK, you can use [tizen-app-installer](https://gist.github.com/CodaBool/f3140d5b4fbccdc990eee3093d21efa3), a lightweight CLI tool that installs `.wgt` files over the network. Requires Node.js.
+If you don't want to install the full Tizen Studio SDK, you can use [tizen-app-installer](https://gist.github.com/CodaBool/f3140d5b4fbccdc990eee3093d21efa3), a lightweight Node.js tool that installs `.wgt` files over your local network.
+
+1. Make sure [Node.js](https://nodejs.org/) is installed on your computer
+2. Download the `tizen-app-installer` script:
+   ```bash
+   git clone https://gist.github.com/CodaBool/f3140d5b4fbccdc990eee3093d21efa3 tizen-app-installer
+   cd tizen-app-installer
+   npm install
+   ```
+3. Put your TV in Developer Mode (see steps above)
+4. Find your TV's IP address (Settings > General > Network > Network Status)
+5. Run the installer, pointing it at the `.wgt` file and your TV's IP:
+   ```bash
+   node index.js <TV_IP_ADDRESS> /path/to/Estakada99-Tizen.wgt
+   ```
+6. The app will appear in the TV's app list
 
 ## Remote Control
 

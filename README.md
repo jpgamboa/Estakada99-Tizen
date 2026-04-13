@@ -41,17 +41,6 @@ Estakada99-Tizen/
 
 A pre-built `Estakada99-Tizen.wgt` is included in the repo — no build step needed.
 
-### Building the .wgt from source
-
-The `.wgt` is just a zip of the project contents:
-
-```bash
-cd Estakada99-Tizen
-zip -r Estakada99-Tizen.wgt config.xml icon.png index.html css js images
-```
-
-## Installing on a Samsung TV (Sideload)
-
 Samsung does not allow `.wgt` files to be installed via USB — sideloading must be done over Wi-Fi using Samsung's debug bridge (`sdb`).
 
 1. On the TV, go to **Settings > Apps**, type `12345` on the remote to enter **Developer Mode**
@@ -64,24 +53,29 @@ Samsung does not allow `.wgt` files to be installed via USB — sideloading must
    ```
 5. The app will appear in the TV's app list
 
-### Alternative: Without Tizen Studio
+### Alternative: Build and install without Tizen Studio
 
-If you don't want to install the full Tizen Studio SDK, you can use [tizen-app-installer](https://gist.github.com/CodaBool/f3140d5b4fbccdc990eee3093d21efa3), a lightweight Node.js tool that installs `.wgt` files over your local network.
+If you want to compile and deploy the app yourself without installing the full Tizen Studio SDK:
 
-1. Make sure [Node.js](https://nodejs.org/) is installed on your computer
-2. Download the `tizen-app-installer` script:
+1. Build the `.wgt` package (it's just a zip):
+   ```bash
+   cd Estakada99-Tizen
+   zip -r Estakada99-Tizen.wgt config.xml icon.png index.html css js images
+   ```
+2. Make sure [Node.js](https://nodejs.org/) is installed on your computer
+3. Download the [tizen-app-installer](https://gist.github.com/CodaBool/f3140d5b4fbccdc990eee3093d21efa3) tool:
    ```bash
    git clone https://gist.github.com/CodaBool/f3140d5b4fbccdc990eee3093d21efa3 tizen-app-installer
    cd tizen-app-installer
    npm install
    ```
-3. Put your TV in Developer Mode (see steps above)
-4. Find your TV's IP address (Settings > General > Network > Network Status)
-5. Run the installer, pointing it at the `.wgt` file and your TV's IP:
+4. Put your TV in Developer Mode (see steps above)
+5. Find your TV's IP address (Settings > General > Network > Network Status)
+6. Install the `.wgt` to your TV over the network:
    ```bash
    node index.js <TV_IP_ADDRESS> /path/to/Estakada99-Tizen.wgt
    ```
-6. The app will appear in the TV's app list
+7. The app will appear in the TV's app list
 
 ## Remote Control
 

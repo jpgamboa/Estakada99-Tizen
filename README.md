@@ -2,7 +2,10 @@
 
 A Tizen web app that streams the Estakada 99 live broadcast on Samsung smart TVs.
 
-Ported from the [Android TV version](https://github.com/jpgamboa/Estakada99-TV).
+### Other platforms
+
+- **Android TV** — [Estakada99-TV](https://github.com/jpgamboa/Estakada99-TV)
+- **LG (WebOS)** — [Estakada99-WebOS](https://github.com/jpgamboa/Estakada99-WebOS)
 
 ## Features
 

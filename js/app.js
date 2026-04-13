@@ -3,6 +3,7 @@
 
     var STREAM_URL = 'https://live.e99.live/main';
     var LIVE_INFO_URL = 'https://bo.e99.live/api/live-info';
+    var LIVE_INFO_CORS_URL = 'https://api.codetabs.com/v1/proxy/?quest=https://bo.e99.live/api/live-info';
     var BUTTON_TIMEOUT = 15000;
     var NOW_PLAYING_POLL_MS = 30000;
     var SKY_CYCLE_MS = 100000;
@@ -150,8 +151,8 @@
 
     function startBounce() {
         function frame() {
-            var maxX = 1920 - 320;
-            var maxY = 1080 - 80;
+            var maxX = 1920 - 426;
+            var maxY = 1080 - 107;
 
             logoX += dx;
             logoY += dy;
@@ -222,6 +223,67 @@
         return name || null;
     }
 
+    function handleNowPlayingResponse(responseText) {
+        try {
+            var data = JSON.parse(responseText);
+            var current = data.current;
+            if (!current) {
+                nowPlayingContainer.classList.add('hidden');
+                return;
+            }
+
+            // Extract show name
+            var rawShowName = null;
+            if (data.currentShow && data.currentShow.name) {
+                rawShowName = data.currentShow.name.trim();
+            } else if (current.metadata && current.metadata.genre) {
+                rawShowName = current.metadata.genre.trim();
+            }
+
+            var showName = rawShowName ? decodeEntities(rawShowName) : null;
+            var label, trackText;
+
+            if (isJingle(current)) {
+                var next = data.next;
+                var line = formatSlot(next);
+                if (line) {
+                    label = 'Next up:';
+                    trackText = decodeEntities(line);
+                } else {
+                    nowPlayingContainer.classList.add('hidden');
+                    return;
+                }
+            } else {
+                var trackLine = formatSlot(current);
+                if (trackLine) {
+                    label = 'Currently playing:';
+                    trackText = decodeEntities(trackLine);
+                } else if (showName) {
+                    label = 'Currently playing:';
+                    trackText = showName;
+                    showName = null;
+                } else {
+                    nowPlayingContainer.classList.add('hidden');
+                    return;
+                }
+            }
+
+            // Update UI
+            if (showName) {
+                showNameEl.textContent = showName;
+                showNameEl.classList.remove('hidden');
+            } else {
+                showNameEl.classList.add('hidden');
+            }
+            nowPlayingLabel.textContent = label;
+            nowPlayingTrack.textContent = trackText;
+            nowPlayingContainer.classList.remove('hidden');
+
+        } catch (e) {
+            // Parse error — ignore
+        }
+    }
+
     function fetchNowPlaying() {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', LIVE_INFO_URL, true);
@@ -229,64 +291,30 @@
         xhr.setRequestHeader('Accept', 'application/json');
 
         xhr.onload = function () {
-            if (xhr.status !== 200) return;
-            try {
-                var data = JSON.parse(xhr.responseText);
-                var current = data.current;
-                if (!current) {
-                    nowPlayingContainer.classList.add('hidden');
-                    return;
-                }
+            if (xhr.status === 200) {
+                handleNowPlayingResponse(xhr.responseText);
+            }
+        };
 
-                // Extract show name
-                var rawShowName = null;
-                if (data.currentShow && data.currentShow.name) {
-                    rawShowName = data.currentShow.name.trim();
-                } else if (current.metadata && current.metadata.genre) {
-                    rawShowName = current.metadata.genre.trim();
-                }
+        xhr.onerror = function () {
+            // Direct URL failed (likely CORS) — try proxy
+            fetchNowPlayingViaProxy();
+        };
+        xhr.ontimeout = function () {
+            fetchNowPlayingViaProxy();
+        };
+        xhr.send();
+    }
 
-                var showName = rawShowName ? decodeEntities(rawShowName) : null;
-                var label, trackText;
+    function fetchNowPlayingViaProxy() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', LIVE_INFO_CORS_URL, true);
+        xhr.timeout = 8000;
+        xhr.setRequestHeader('Accept', 'application/json');
 
-                if (isJingle(current)) {
-                    var next = data.next;
-                    var line = formatSlot(next);
-                    if (line) {
-                        label = 'Next up:';
-                        trackText = decodeEntities(line);
-                    } else {
-                        nowPlayingContainer.classList.add('hidden');
-                        return;
-                    }
-                } else {
-                    var trackLine = formatSlot(current);
-                    if (trackLine) {
-                        label = 'Currently playing:';
-                        trackText = decodeEntities(trackLine);
-                    } else if (showName) {
-                        label = 'Currently playing:';
-                        trackText = showName;
-                        showName = null;
-                    } else {
-                        nowPlayingContainer.classList.add('hidden');
-                        return;
-                    }
-                }
-
-                // Update UI
-                if (showName) {
-                    showNameEl.textContent = showName;
-                    showNameEl.classList.remove('hidden');
-                } else {
-                    showNameEl.classList.add('hidden');
-                }
-                nowPlayingLabel.textContent = label;
-                nowPlayingTrack.textContent = trackText;
-                nowPlayingContainer.classList.remove('hidden');
-
-            } catch (e) {
-                // Parse error — ignore
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                handleNowPlayingResponse(xhr.responseText);
             }
         };
 

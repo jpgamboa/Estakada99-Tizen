@@ -23,24 +23,31 @@ A Tizen web app that streams the Estakada 99 live broadcast on Samsung smart TVs
 
 ```
 Estakada99-Tizen/
-├── config.xml          # Tizen app manifest
-├── icon.png            # App icon (117x117)
-├── index.html          # Entry point
-├── css/style.css       # Animations and layout
-├── js/app.js           # Playback, bounce, remote input
+├── config.xml              # Tizen app manifest
+├── icon.png                # App icon (117x117)
+├── index.html              # Entry point
+├── Estakada99-Tizen.wgt    # Pre-built package (ready to install)
+├── css/
+│   ├── style.css           # Styles, gradient, Satoshi font
+│   ├── satoshi-regular.ttf
+│   └── satoshi-bold.ttf
+├── js/app.js               # Playback, bounce, now-playing, sky gradient
 └── images/
-    ├── background.png
     ├── banner.png
     └── logo.png
 ```
 
-## Building the .wgt Package
+## Installing on a Samsung TV (Sideload)
+
+A pre-built `Estakada99-Tizen.wgt` is included in the repo — no build step needed.
+
+### Building the .wgt from source
 
 The `.wgt` is just a zip of the project contents:
 
 ```bash
 cd Estakada99-Tizen
-zip -r Estakada99TV.wgt *
+zip -r Estakada99-Tizen.wgt config.xml icon.png index.html css js images
 ```
 
 ## Installing on a Samsung TV (Sideload)
@@ -53,7 +60,7 @@ Samsung does not allow `.wgt` files to be installed via USB — sideloading must
 4. On your computer, connect via Samsung's debug bridge:
    ```bash
    sdb connect <TV_IP_ADDRESS>
-   sdb install Estakada99TV.wgt
+   sdb install Estakada99-Tizen.wgt
    ```
 5. The app will appear in the TV's app list
 
